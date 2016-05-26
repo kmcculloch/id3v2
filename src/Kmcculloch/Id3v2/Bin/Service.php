@@ -32,12 +32,12 @@ class Service
 
         // Check that we have a tested version of id3v2 installed.
         $output = $this->exec(array('--version'));
-        if ($output[0] != 'id3v2 0.1.12') {
+        if ($output[0] != $this->bin.' 0.1.12') {
             throw new \Exception('Only id3v2 version 0.1.12 is supported at this time.');
         }
     }
 
-    private function exec(array $arguments)
+    public function exec(array $arguments)
     {
         // Prepend the binary to the arguments array.
         array_unshift($arguments, $this->bin);

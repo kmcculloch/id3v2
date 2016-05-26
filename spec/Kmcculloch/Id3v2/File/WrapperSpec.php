@@ -36,4 +36,14 @@ class WrapperSpec extends ObjectBehavior
         $exception = new \Exception(sprintf('File %s is not an audio file', $file));
         $this->shouldThrow($exception)->duringInstantiation();
     }
+
+    function it_checks_for_id3v1()
+    {
+        $this->hasV1()->shouldReturn(true);
+    }
+
+    function it_checks_for_id3v2()
+    {
+        $this->hasV1()->shouldReturn(true);
+    }
 }
