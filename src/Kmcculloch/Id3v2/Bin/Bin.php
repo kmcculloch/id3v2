@@ -2,10 +2,10 @@
 
 namespace Kmcculloch\Id3v2\Bin;
 
-class Service
+class Bin implements BinInterface
 {
-    protected $bin = '';
-    public $executor;
+    protected $bin;
+    protected $executor;
 
     public function __construct(Finder $finder, Executor $executor)
     {
@@ -19,12 +19,16 @@ class Service
         
         // Check that finder result is, in fact, a file.
         if (!file_exists($this->bin)) {
-            throw new \Exception(sprintf('File %s does not exist', $this->bin));
+            throw new \Exception(
+                sprintf('File %s does not exist', $this->bin)
+            );
         }
 
         // Check that the file is executable.
         if (!is_executable($this->bin)) {
-            throw new \Exception(sprintf('File %s is not executable', $this->bin));
+            throw new \Exception(
+                sprintf('File %s is not executable', $this->bin)
+            );
         }
 
         // Store the executor helper object so that we can execute commands.
@@ -33,7 +37,9 @@ class Service
         // Check that we have a tested version of id3v2 installed.
         $output = $this->exec(array('--version'));
         if ($output[0] != $this->bin.' 0.1.12') {
-            throw new \Exception('Only id3v2 version 0.1.12 is supported at this time.');
+            throw new \Exception(
+                'Only id3v2 version 0.1.12 is supported at this time.'
+            );
         }
     }
 

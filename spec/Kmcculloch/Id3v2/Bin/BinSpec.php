@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Kmcculloch\Id3v2\Bin\Finder;
 use Kmcculloch\Id3v2\Bin\Executor;
 
-class ServiceSpec extends ObjectBehavior
+class BinSpec extends ObjectBehavior
 {
     private $finder;
     private $executor;
@@ -33,7 +33,7 @@ class ServiceSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Kmcculloch\Id3v2\Bin\Service');
+        $this->shouldHaveType('Kmcculloch\Id3v2\Bin\Bin');
     }
 
     function it_checks_that_the_binary_exists()

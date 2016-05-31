@@ -4,11 +4,14 @@ namespace Kmcculloch\Id3v2\Bin;
 
 /**
  * ExecutorInterface.
- *
- * We code our binary executable helpers to an interface so that we can easily
- * return mock data during tests.
  */
 interface ExecutorInterface
 {
+    /**
+     * Execute a command.
+     *
+     * @param str $command
+     *   An executable bash command.
+     */
     public function exec($command);
 }
