@@ -68,8 +68,13 @@ class BinSpec extends ObjectBehavior
 
     function it_confirms_the_binary_version()
     {
+        // Get a path to a real executable file.
+        exec('which which', $output);
+        $binPath = $output[0];
+        $this->finder->locate('id3v2')->willReturn($binPath);
+
         // Spoof an unsupported id3v2 version.
-        $this->executor->exec('/usr/bin/id3v2 --version')->willReturn(array(
+        $this->executor->exec("$binPath --version")->willReturn(array(
             'id3v2 0.1.11',
         ));
 
