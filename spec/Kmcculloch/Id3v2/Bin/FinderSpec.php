@@ -20,4 +20,9 @@ class FinderSpec extends ObjectBehavior
             $this->locate('id3v2')->shouldReturn($usualPath);
         }
     }
+
+    function it_handles_failure_to_find_binary()
+    {
+        $this->locate('foobarbazxxxx')->shouldReturn(null);
+    }
 }

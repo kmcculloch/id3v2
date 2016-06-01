@@ -2,11 +2,22 @@
 
 namespace Kmcculloch\Id3v2\Bin;
 
+/**
+ * Service wrapper for the id3v2 binary.
+ */
 class Bin
 {
     protected $bin;
     protected $executor;
 
+    /**
+     * Constructor.
+     *
+     * @param Finder   $finder
+     *   A finder object, used to locate the binary on the system.
+     * @param Executor $executor
+     *   An executor object, used to pass commands to the binary.
+     */
     public function __construct(Finder $finder, Executor $executor)
     {
         // Use the finder to store the path to the id3v2 binary.
@@ -16,7 +27,7 @@ class Bin
         if ($this->bin == null) {
             throw new \Exception('Could not locate id3v2 executable');
         }
-        
+
         // Check that finder result is, in fact, a file.
         if (!file_exists($this->bin)) {
             throw new \Exception(
@@ -43,6 +54,16 @@ class Bin
         }
     }
 
+    /**
+     * Pass a command along to the executor.
+     *
+     * @param array $arguments
+     *   An ordered sequence of inputs to be strung together into a
+     *   shell command.
+     *
+     * @return array
+     *   The output array from PHP's exec() command.
+     */
     public function exec(array $arguments)
     {
         // Prepend the binary to the arguments array.
