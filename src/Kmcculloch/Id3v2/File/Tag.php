@@ -5,7 +5,7 @@ namespace Kmcculloch\Id3v2\File;
 /**
  * Tag wrapper object.
  */
-class Tag implements TagInterface
+class Tag
 {
     protected $whichTag;
     protected $whichProperty;

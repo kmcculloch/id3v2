@@ -2,7 +2,7 @@
 
 namespace Kmcculloch\Id3v2\Bin;
 
-class Executor implements ExecutorInterface
+class Executor
 {
     public function exec($command)
     {

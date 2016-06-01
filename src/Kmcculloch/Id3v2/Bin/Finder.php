@@ -2,7 +2,7 @@
 
 namespace Kmcculloch\Id3v2\Bin;
 
-class Finder implements FinderInterface
+class Finder
 {
     public function locate($bin)
     {

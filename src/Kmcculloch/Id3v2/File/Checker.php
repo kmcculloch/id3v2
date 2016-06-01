@@ -5,7 +5,7 @@ namespace Kmcculloch\Id3v2\File;
 /**
  * Check for possible problems with the file.
  */
-class Checker implements CheckerInterface
+class Checker
 {
     protected $filePath;
 

@@ -2,7 +2,7 @@
 
 namespace Kmcculloch\Id3v2\Bin;
 
-class Bin implements BinInterface
+class Bin
 {
     protected $bin;
     protected $executor;
