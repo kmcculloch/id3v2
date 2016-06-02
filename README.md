@@ -8,7 +8,7 @@
 $id3v2 = new Kmcculloch\Id3v2\Id3v2();
 
 // Fetch a id3v1/id3v2 tag object for a music file.
-$tag = $id3v2->get('/home/user/music/my_song.mp3');
+$tag = $id3v2->getTag('/home/user/music/my_song.mp3');
 
 // Get a field from the id3v1 tag. The field names correspond to id3v2
 // arguments.
@@ -38,5 +38,5 @@ $track   = $tag->v2->TRCK->get();
 $tag->artist->get();
 
 // Save your changes back to the music file.
-$id3v2->write($tag);
+$id3v2->writeTag($tag);
 ```

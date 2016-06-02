@@ -1,11 +1,11 @@
 <?php
 
-namespace Kmcculloch\Id3v2\File;
+namespace Kmcculloch\Id3v2\Tag;
 
 /**
  * Check for possible problems with the file.
  */
-class Checker
+class FileChecker
 {
     protected $filePath;
 
@@ -53,9 +53,10 @@ class Checker
     }
 
     /**
-     * Retrieve the file path.
+     * Return the file path.
      *
-     * @return str The file path.
+     * @return string
+     *   The file path.
      */
     public function getPath()
     {

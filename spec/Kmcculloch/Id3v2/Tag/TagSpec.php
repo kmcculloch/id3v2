@@ -1,20 +1,70 @@
 <?php
 
-namespace spec\Kmcculloch\Id3v2\File;
+namespace spec\Kmcculloch\Id3v2\Tag;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class TagSpec extends ObjectBehavior
 {
+    private $filePath;
+    private $bin;
+    private $fileChecker;
+
+    function let($fileChecker, $bin)
+    {
+        $this->filePath = '/foo/bar.mp3';
+
+        $this->bin = $bin;
+        $this->bin->beADoubleOf('Kmcculloch\Id3v2\Bin\Bin');
+        $this->bin->exec(array(
+            '--list',
+            $this->filePath,
+        ))->willReturn(array(
+            '/foo/bar.mp3: No ID3 tag',
+        ));
+
+        $this->fileChecker = $fileChecker;
+        $this->fileChecker->beADoubleOf('Kmcculloch\Id3v2\Tag\FileChecker');
+        $this->fileChecker->checkIsReadable()->willReturn(true);
+        $this->fileChecker->checkIsAudio()->willReturn(true);
+        $this->fileChecker->checkIsWriteable()->willReturn(true);
+        $this->fileChecker->getPath()->willReturn($this->filePath);
+
+        $this->beConstructedWith($this->fileChecker, $this->bin);
+    }
+
     function it_is_initializable()
     {
-        $this->shouldHaveType('Kmcculloch\Id3v2\File\Tag');
+        $this->shouldHaveType('Kmcculloch\Id3v2\Tag\Tag');
+    }
+
+    function it_checks_that_the_file_exists()
+    {
+        $this->fileChecker->checkIsReadable()->willReturn(false);
+
+        $exception = new \Exception(
+            sprintf('File %s does not exist or cannot be read', $this->filePath)
+        );
+        $this->shouldThrow($exception)->duringInstantiation();
+    }
+
+    function it_checks_that_the_file_is_an_mp3()
+    {
+        $this->fileChecker->checkIsAudio()->willReturn(false);
+
+        $exception = new \Exception(
+            sprintf('File %s is not an audio file', $this->filePath)
+        );
+        $this->shouldThrow($exception)->duringInstantiation();
     }
 
     function it_handles_v1_and_v2_together()
     {
-        $this->parseListOutput(array(
+        $this->bin->exec(array(
+            '--list',
+            $this->filePath,
+        ))->willReturn(array(
             'id3v1 tag info for 01 Southern Point.mp3:',
             'Title  : Southern Point                  Artist: Grizzly Bear',
             'Album  : Veckatimest                     Year: 2009, Genre: Indie (131)',
@@ -87,7 +137,10 @@ class TagSpec extends ObjectBehavior
 
     function it_handles_v1_only()
     {
-        $this->parseListOutput(array(
+        $this->bin->exec(array(
+            '--list',
+            $this->filePath,
+        ))->willReturn(array(
             'id3v1 tag info for 02 Two Weeks.mp3:',
             'Title  : Two Weeks                       Artist: Grizzly Bear',
             'Album  : Veckatimest                     Year: 2009, Genre: Unknown (255)',
@@ -132,7 +185,10 @@ class TagSpec extends ObjectBehavior
 
     function it_handles_v2_only()
     {
-        $this->parseListOutput(array(
+        $this->bin->exec(array(
+            '--list',
+            $this->filePath,
+        ))->willReturn(array(
             'id3v2 tag info for 03 All We Ask.mp3:',
             'TIT2 (Title/songname/content description): All We Ask',
             'TPE1 (Lead performer(s)/Soloist(s)): Grizzly Bear',
@@ -170,7 +226,10 @@ class TagSpec extends ObjectBehavior
 
     function it_handles_no_tag()
     {
-        $this->parseListOutput(array(
+        $this->bin->exec(array(
+            '--list',
+            $this->filePath,
+        ))->willReturn(array(
             '04 Fine For Now.mp3: No ID3 tag',
         ));
 

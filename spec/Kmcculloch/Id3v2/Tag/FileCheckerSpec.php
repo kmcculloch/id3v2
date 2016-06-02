@@ -1,21 +1,21 @@
 <?php
 
-namespace spec\Kmcculloch\Id3v2\File;
+namespace spec\Kmcculloch\Id3v2\Tag;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CheckerSpec extends ObjectBehavior
+class FileCheckerSpec extends ObjectBehavior
 {
     function let()
     {
         // Test against a dummy file path.
-        $this->beConstructedWith('/foo/bar');
+        $this->beConstructedWith('/foo/bar.mp3');
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Kmcculloch\Id3v2\File\Checker');
+        $this->shouldHaveType('Kmcculloch\Id3v2\Tag\FileChecker');
     }
 
     function it_checks_that_the_file_is_readable()
@@ -35,6 +35,6 @@ class CheckerSpec extends ObjectBehavior
 
     function it_returns_the_file_path()
     {
-        $this->getPath()->shouldReturn('/foo/bar');
+        $this->getPath()->shouldReturn('/foo/bar.mp3');
     }
 }

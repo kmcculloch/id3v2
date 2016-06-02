@@ -1,25 +1,63 @@
 <?php
 
-namespace Kmcculloch\Id3v2\File;
+namespace Kmcculloch\Id3v2\Tag;
+
+use Kmcculloch\Id3v2\Bin\Bin;
 
 /**
  * Tag wrapper object.
  */
 class Tag
 {
+    protected $filePath;
+    protected $bin;
+
     protected $whichTag;
     protected $whichProperty;
+
     protected $v1 = array();
     protected $v2 = array();
 
     /**
      * Constructor: Parse id3v2 list output into tag storage.
      *
-     * @param array $output
-     *   The output from the id3v2 --list command.
+     * @param FileChecker $fileChecker
+     *   A file checker object to validate the audio file.
+     * @param Bin         $bin
+     *   The wrapper object for the binary id3v2 executable.
      */
-    public function parseListOutput(array $output)
+    public function __construct(FileChecker $fileChecker, Bin $bin)
     {
+        $this->filePath = $fileChecker->getPath();
+        $this->bin = $bin;
+
+        // Check that we're looking at a real file.
+        if (!$fileChecker->checkIsReadable()) {
+            throw new \Exception(
+                sprintf('File %s does not exist or cannot be read', $this->filePath)
+            );
+        }
+
+        // Check that the file is an audio file.
+        if (!$fileChecker->checkIsAudio()) {
+            throw new \Exception(
+                sprintf('File %s is not an audio file', $this->filePath)
+            );
+        }
+
+        // Build the tag.
+        $this->buildTag();
+    }
+
+    protected function buildTag()
+    {
+        $arguments = array(
+            '--list',
+            $this->filePath,
+        );
+
+        $output = $this->bin->exec($arguments);
+
         $id3v1 = array();
         $id3v2 = array();
         $useArray = '';
